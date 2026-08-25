@@ -14,11 +14,11 @@
         <section class="content">
             <h1>Welcome to TSUE</h1>
             <div class="web-navigation">
-                <a href="#">Домашняя работа</a>
-                <a href="#">Презентации</a>
-                <a href="#">Конспекты</a>
-                <a href="#">Предметы</a>
-                <a href="#">Расписание</a>
+                <a href="#" data-endpoint="homework">Домашняя работа</a>
+                <a href="#" data-endpoint="presentations">Презентации</a>
+                <a href="#" data-endpoint="notes">Конспекты</a>
+                <a href="#" data-endpoint="subjects">Предметы</a>
+                <a href="#" data-endpoint="schedule">Расписание</a>
                 <nav>
                     <div class="folder-menu" id="folder-menu">
                         <i class="folder fa-solid fa-folder" id="folder-icon"></i>
@@ -32,6 +32,9 @@
                     </div>
                 </nav>
             </div>
+
+            <!-- сюда будут подгружаться данные с бэкенда -->
+            <div class="data-panel" id="data-panel"></div>
         </section>
     </main>
     <script src="script.js"></script>
