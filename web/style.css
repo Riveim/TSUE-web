@@ -137,7 +137,60 @@ nav {
     filter: drop-shadow(0px 0px 10px var(--icon-color));
 }
 
+.web-navigation a.active-tab {
+    color: var(--icon-color);
+}
+
 section h1 {
     border-bottom: 1px solid var(--icon-color);
     cursor: default;
+}
+
+/* --- Панель с данными с бэкенда --- */
+
+.data-panel {
+    width: 100%;
+    max-width: 700px;
+    padding: 0 20px;
+    display: none;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.data-panel.visible {
+    display: flex;
+}
+
+.data-panel .panel-title {
+    font-size: 1.2rem;
+    color: var(--icon-color);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 8px;
+}
+
+.data-panel .panel-status {
+    color: var(--text-color);
+    opacity: 0.7;
+    font-size: 0.95rem;
+}
+
+.data-panel .panel-status.error {
+    color: #f87171;
+    opacity: 1;
+}
+
+.data-item {
+    background: var(--border-color);
+    border-radius: 10px;
+    padding: 14px 18px;
+}
+
+.data-item .data-item-title {
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.data-item .data-item-desc {
+    font-size: 0.9rem;
+    opacity: 0.8;
 }
