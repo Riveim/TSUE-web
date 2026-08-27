@@ -7,7 +7,9 @@ import com.tsue.backend.entity.ContentItem;
 import com.tsue.backend.exception.ItemNotFoundException;
 import com.tsue.backend.repository.ContentItemRepository;
 import com.tsue.backend.service.ContentItemService;
+import com.tsue.backend.service.FileStorageService;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -15,9 +17,11 @@ import java.util.List;
 public class ContentItemServiceImpl implements ContentItemService {
 
     private final ContentItemRepository repository;
+    private final FileStorageService fileStorageService;
 
-    public ContentItemServiceImpl(ContentItemRepository repository) {
+    public ContentItemServiceImpl(ContentItemRepository repository, FileStorageService fileStorageService) {
         this.repository = repository;
+        this.fileStorageService = fileStorageService;
     }
 
     @Override
@@ -29,8 +33,29 @@ public class ContentItemServiceImpl implements ContentItemService {
     }
 
     @Override
+    public ContentItemDto getById(Long id) {
+        ContentItem item = repository.findById(id)
+                .orElseThrow(() -> new ItemNotFoundException(id));
+        return toDto(item);
+    }
+
+    @Override
     public ContentItemDto create(Category category, CreateContentItemRequest request) {
         ContentItem item = new ContentItem(category, request.title(), request.description());
+        ContentItem saved = repository.save(item);
+        return toDto(saved);
+    }
+
+    @Override
+    public ContentItemDto createWithFile(Category category, String title, String description, MultipartFile file) {
+        ContentItem item = new ContentItem(category, title, description);
+
+        if (file != null && !file.isEmpty()) {
+            String storedFileName = fileStorageService.store(file);
+            item.setOriginalFileName(file.getOriginalFilename());
+            item.setStoredFileName(storedFileName);
+        }
+
         ContentItem saved = repository.save(item);
         return toDto(saved);
     }
@@ -44,6 +69,9 @@ public class ContentItemServiceImpl implements ContentItemService {
     }
 
     private ContentItemDto toDto(ContentItem item) {
-        return new ContentItemDto(item.getId(), item.getTitle(), item.getDescription());
+        String downloadUrl = item.getStoredFileName() != null
+                ? "/api/files/" + item.getStoredFileName()
+                : null;
+        return new ContentItemDto(item.getId(), item.getTitle(), item.getDescription(), downloadUrl);
     }
 }

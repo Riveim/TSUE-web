@@ -194,3 +194,123 @@ section h1 {
     font-size: 0.9rem;
     opacity: 0.8;
 }
+
+.data-item .data-item-download {
+    display: inline-block;
+    margin-top: 8px;
+    color: var(--icon-color);
+    font-size: 0.9rem;
+    text-decoration: underline;
+}
+
+/* --- Форма загрузки файла --- */
+
+.upload-form {
+    width: 100%;
+    max-width: 700px;
+    padding: 16px 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    background: var(--border-color);
+    border-radius: 12px;
+}
+
+.upload-form input[type="text"] {
+    flex: 1;
+    min-width: 150px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    background: var(--background-color);
+    color: var(--text-color);
+}
+
+.upload-form input[type="file"] {
+    color: var(--text-color);
+}
+
+.upload-form button {
+    padding: 8px 20px;
+    border-radius: 6px;
+    border: none;
+    background: var(--icon-color);
+    color: #17171b;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.upload-form button:hover {
+    opacity: 0.85;
+}
+
+/* --- Панель расписания --- */
+
+.schedule-panel {
+    width: 100%;
+    max-width: 900px;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.schedule-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+}
+
+.class-select {
+    padding: 8px 14px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    background: var(--background-color);
+    color: var(--text-color);
+    font-size: 1rem;
+    min-width: 200px;
+}
+
+.schedule-day {
+    background: var(--border-color);
+    border-radius: 10px;
+    padding: 14px 18px;
+}
+
+.schedule-day-title {
+    color: var(--icon-color);
+    font-weight: 600;
+    margin-bottom: 10px;
+    font-size: 1.05rem;
+}
+
+.schedule-lesson {
+    display: flex;
+    gap: 14px;
+    padding: 8px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.schedule-lesson:first-of-type {
+    border-top: none;
+}
+
+.schedule-lesson-period {
+    min-width: 90px;
+    color: var(--icon-color);
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.schedule-lesson-info .subject {
+    font-weight: 600;
+}
+
+.schedule-lesson-info .meta {
+    font-size: 0.85rem;
+    opacity: 0.75;
+}

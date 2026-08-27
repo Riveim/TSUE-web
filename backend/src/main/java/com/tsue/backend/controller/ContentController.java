@@ -7,8 +7,10 @@ import com.tsue.backend.exception.CategoryNotFoundException;
 import com.tsue.backend.service.ContentItemService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -38,11 +40,32 @@ public class ContentController {
         return service.getByCategory(parseCategory(category));
     }
 
+    @GetMapping("/{category}/{id}")
+    public ContentItemDto getOne(@PathVariable String category, @PathVariable Long id) {
+        // категория в пути проверяется для консистентности URL,
+        // сам элемент ищется просто по id
+        parseCategory(category);
+        return service.getById(id);
+    }
+
     @PostMapping("/{category}")
     @ResponseStatus(HttpStatus.CREATED)
     public ContentItemDto create(@PathVariable String category,
                                   @Valid @RequestBody CreateContentItemRequest request) {
         return service.create(parseCategory(category), request);
+    }
+
+    /**
+     * Загрузка файла вместе с элементом.
+     * Отправляется как multipart/form-data с полями: title, description (необязательно), file.
+     */
+    @PostMapping(value = "/{category}/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    public ContentItemDto uploadFile(@PathVariable String category,
+                                      @RequestParam("title") String title,
+                                      @RequestParam(value = "description", required = false) String description,
+                                      @RequestParam("file") MultipartFile file) {
+        return service.createWithFile(parseCategory(category), title, description, file);
     }
 
     @DeleteMapping("/{category}/{id}")
