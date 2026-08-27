@@ -8,14 +8,16 @@
 }
 
 :root {
-    --background-color: #17171b;
-    --text-color: #e4e4e7;
     --icon-color: #facc15;
     --border-color: #27272a;
+    --background-color: #121212;
+    --text-color: #ffffff;
+    --button-color: #dc143c;
 }
 
 body {
     background-color: var(--background-color);
+    overflow-x: hidden;
 }
 
 header {
@@ -25,7 +27,7 @@ header {
     margin: 1rem;
 }
 
-nav {
+header nav {
     display: flex;
     justify-content: space-between;
     gap: 30px;
@@ -91,6 +93,7 @@ nav {
 
 .nav-links li a {
     font-size: 1rem;
+    
     color: var(--text-color);
     transition: all 0.3s ease;
 }
@@ -112,85 +115,42 @@ nav {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 1.5rem;
+    gap: 2.6rem;
     padding: 20px;
+    font-weight: bold;
+    border: 1px solid var(--border-color);
     border-radius: 20px;
+    font-size: 1.5rem;
+    box-shadow: 0px 8px 10px var(--border-color);
+    width: min(1200px, 100%);
+    margin: 0 auto;
 }
 
-@media (min-width: 768px) {
-    .web-navigation {
-        flex-wrap: nowrap;
-        gap: 4rem;
-        padding: 30px;
-        border-radius: 999px;
+    .web-navigation a {
+        color: var(--text-color);
+        transition: all 0.3s ease;
     }
-}
 
-.web-navigation a {
-    color: var(--text-color);
-    transition: all 0.3s ease-in-out;
-}
-
-.web-navigation a:hover {
-    color: var(--icon-color);
-    transform: scale(1.1);
-    filter: drop-shadow(0px 0px 10px var(--icon-color));
-}
-
-.web-navigation a.active-tab {
-    color: var(--icon-color);
-}
+        .web-navigation a:hover {
+            color: var(--icon-color);
+            transform: scale(1.1);
+            filter: drop-shadow(0px 0px 10px var(--icon-color));
+        }
 
 section h1 {
     border-bottom: 1px solid var(--icon-color);
     cursor: default;
 }
 
-/* --- Панель с данными с бэкенда --- */
-
-.data-panel {
-    width: 100%;
-    max-width: 700px;
-    padding: 0 20px;
-    display: none;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.data-panel.visible {
-    display: flex;
-}
-
-.data-panel .panel-title {
-    font-size: 1.2rem;
-    color: var(--icon-color);
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 8px;
-}
-
-.data-panel .panel-status {
+.open-button {
     color: var(--text-color);
-    opacity: 0.7;
-    font-size: 0.95rem;
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    transition: all .3s ease-in-out;
 }
 
-.data-panel .panel-status.error {
-    color: #f87171;
-    opacity: 1;
-}
-
-.data-item {
-    background: var(--border-color);
-    border-radius: 10px;
-    padding: 14px 18px;
-}
-
-.data-item .data-item-title {
-    font-weight: 600;
-    margin-bottom: 4px;
-}
-
-.data-item .data-item-desc {
-    font-size: 0.9rem;
-    opacity: 0.8;
-}
+    .open-button:hover {
+        color: var(--icon-color);
+        filter: drop-shadow(0px 0px 10px var(--icon-color));
+    }
