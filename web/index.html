@@ -43,6 +43,25 @@
 
             <!-- сюда будут подгружаться данные с бэкенда -->
             <div class="data-panel" id="data-panel"></div>
+
+            <!-- отдельная панель для расписания (реальный EduPage-парсер) -->
+            <div class="schedule-panel" id="schedule-panel" style="display: none;">
+                <div class="schedule-header">
+                    <span class="panel-title">Расписание</span>
+                    <select id="class-select" class="class-select">
+                        <option value="">Выберите группу...</option>
+                    </select>
+                </div>
+                <div id="schedule-content"></div>
+            </div>
+
+            <!-- форма для загрузки файла в текущий выбранный раздел -->
+            <form class="upload-form" id="upload-form" style="display: none;">
+                <input type="text" id="upload-title" placeholder="Название" required>
+                <input type="text" id="upload-description" placeholder="Описание (необязательно)">
+                <input type="file" id="upload-file" required>
+                <button type="submit">Загрузить</button>
+            </form>
         </section>
     </main>
     <script src="script.js"></script>

@@ -20,6 +20,12 @@ public class ContentItem {
     @Column(length = 1000)
     private String description;
 
+    // оригинальное имя файла, которое видит пользователь при скачивании
+    private String originalFileName;
+
+    // имя файла на диске (уникальное, чтобы избежать конфликтов)
+    private String storedFileName;
+
     protected ContentItem() {
         // требуется JPA
     }
@@ -28,6 +34,22 @@ public class ContentItem {
         this.category = category;
         this.title = title;
         this.description = description;
+    }
+
+    public String getOriginalFileName() {
+        return originalFileName;
+    }
+
+    public void setOriginalFileName(String originalFileName) {
+        this.originalFileName = originalFileName;
+    }
+
+    public String getStoredFileName() {
+        return storedFileName;
+    }
+
+    public void setStoredFileName(String storedFileName) {
+        this.storedFileName = storedFileName;
     }
 
     public Long getId() {

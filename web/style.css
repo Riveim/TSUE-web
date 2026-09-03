@@ -154,3 +154,122 @@ section h1 {
         color: var(--icon-color);
         filter: drop-shadow(0px 0px 10px var(--icon-color));
     }
+
+.buttons-nav {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 50px;
+}
+
+.buttons-nav button {
+    font-size: 1.5rem;
+    font-weight: bold;
+    border: none;
+    background: transparent;
+    transition: all 0.3s ease-in-out;
+}
+
+    .buttons-nav button:hover {
+        color: var(--icon-color);
+        transform: scale(1.1);
+        filter: drop-shadow(0px 0px 10px var(--icon-color));
+    }
+
+    
+    .add-btn {
+        border: none;
+        background: transparent;
+        font-size: 1.5rem;
+        cursor: pointer;
+}
+
+.add-modal {
+    color: var(--text-color);
+    background-color: var(--background-color);
+    margin: auto;
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0px 8px 10px var(--border-color);
+    width: 100%;
+    max-width: 600px;
+}
+
+.add-form h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.add-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.add-form input {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    padding: 7px;
+}
+
+.modal-buttons {
+    margin: auto;
+    display: flex;
+    gap: 30px;
+}
+
+.modal-buttons button {
+    background-color: transparent;
+    border: none;
+    color: var(--button-color);
+    font-weight: bold;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+.add-form input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    cursor: pointer;
+}
+
+.data-section table {
+    display: none;
+    margin: auto;
+    margin-top: 50px;
+    padding: 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    box-shadow: 0px 8px 10px var(--border-color);
+    border-spacing: 40px 20px;
+}
+
+.data-section table tbody {
+    text-align: left;
+}
+
+th {
+    font-weight: bold;
+    color: var(--icon-color);
+}
+
+.what-to-add {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 10px;
+}
+
+.what-to-add button {
+    background-color: transparent;
+    border: none;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
