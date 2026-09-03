@@ -1,5 +1,3 @@
-// ==== Меню-папка (как было) ====
-
 const folderMenu = document.getElementById('folder-menu');
 
 folderMenu.addEventListener('click', (e) => {
@@ -13,259 +11,180 @@ document.addEventListener('click', (e) => {
     }
 });
 
-// ==== Подключение к бэкенду (Spring Boot) ====
+const homework = document.getElementById('homework-button');
+const presentations = document.getElementById('presentations-button');
+const notes = document.getElementById('notes-button');
+const subjects = document.getElementById('subjects-button');
+const schedule = document.getElementById('schedule-button');
 
-// Адрес вашего бэкенда. Поменяйте на реальный при деплое.
-const API_BASE = 'http://localhost:8080/api';
+const folderButtons = [homework, presentations, notes, subjects, schedule];
 
-const dataPanel = document.getElementById('data-panel');
-const navLinks = document.querySelectorAll('.web-navigation a[data-endpoint]');
-const uploadForm = document.getElementById('upload-form');
-const uploadTitle = document.getElementById('upload-title');
-const uploadDescription = document.getElementById('upload-description');
-const uploadFile = document.getElementById('upload-file');
-
-const schedulePanel = document.getElementById('schedule-panel');
-const scheduleContent = document.getElementById('schedule-content');
-const classSelect = document.getElementById('class-select');
-
-let currentEndpoint = null;
-let currentTitle = null;
-
-navLinks.forEach(link => {
-    link.addEventListener('click', (e) => {
-        e.preventDefault();
-
-        // подсветка активного пункта меню
-        navLinks.forEach(l => l.classList.remove('active-tab'));
-        link.classList.add('active-tab');
-
-        currentEndpoint = link.dataset.endpoint;
-        currentTitle = link.textContent.trim();
-
-        if (currentEndpoint === 'schedule') {
-            // расписание — отдельная логика (реальный парсер EduPage)
-            dataPanel.classList.remove('visible');
-            uploadForm.style.display = 'none';
-            schedulePanel.style.display = 'flex';
-            loadClassList();
-        } else {
-            schedulePanel.style.display = 'none';
-            uploadForm.style.display = 'flex';
-            loadSection(currentEndpoint, currentTitle);
-        }
-    });
-});
-
-// ==== Обычные разделы (Предметы, Домашняя работа и т.д.) ====
-
-async function loadSection(endpoint, title) {
-    showLoading(title);
-
-    try {
-        const res = await fetch(`${API_BASE}/${endpoint}`);
-
-        if (!res.ok) {
-            throw new Error(`Сервер ответил ${res.status}`);
-        }
-
-        const items = await res.json();
-        renderItems(title, items);
-
-    } catch (err) {
-        showError(title, err.message);
-    }
-}
-
-function showLoading(title) {
-    dataPanel.classList.add('visible');
-    dataPanel.innerHTML = `
-        <div class="panel-title">${title}</div>
-        <div class="panel-status">Загрузка...</div>
-    `;
-}
-
-function showError(title, message) {
-    dataPanel.innerHTML = `
-        <div class="panel-title">${title}</div>
-        <div class="panel-status error">Не удалось загрузить данные: ${message}</div>
-    `;
-}
-
-function renderItems(title, items) {
-    if (!items || items.length === 0) {
-        dataPanel.innerHTML = `
-            <div class="panel-title">${title}</div>
-            <div class="panel-status">Пока пусто</div>
-        `;
-        return;
-    }
-
-    const itemsHtml = items.map(item => {
-        const description = item.description
-            ? `<div class="data-item-desc">${escapeHtml(item.description)}</div>`
-            : '';
-
-        // если у элемента есть прикреплённый файл — показываем ссылку на скачивание
-        const download = item.downloadUrl
-            ? `<a class="data-item-download" href="${API_BASE.replace('/api', '')}${item.downloadUrl}" target="_blank">
-                   <i class="fa-solid fa-download"></i> Скачать файл
-               </a>`
-            : '';
-
-        return `
-            <div class="data-item">
-                <div class="data-item-title">${escapeHtml(item.title ?? item.name ?? 'Без названия')}</div>
-                ${description}
-                ${download}
-            </div>
-        `;
-    }).join('');
-
-    dataPanel.innerHTML = `
-        <div class="panel-title">${title}</div>
-        ${itemsHtml}
-    `;
-}
-
-// ==== Загрузка файла (для обычных разделов) ====
-
-uploadForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    if (!currentEndpoint) {
-        alert('Сначала выберите раздел (например, «Предметы»)');
-        return;
-    }
-
-    const formData = new FormData();
-    formData.append('title', uploadTitle.value);
-    formData.append('description', uploadDescription.value);
-    formData.append('file', uploadFile.files[0]);
-
-    try {
-        const res = await fetch(`${API_BASE}/${currentEndpoint}/upload`, {
-            method: 'POST',
-            body: formData
-            // Content-Type НЕ указываем вручную — браузер сам поставит
-            // multipart/form-data с правильным boundary
+folderButtons.forEach((button) => {
+    button.addEventListener('click', (e) => {
+        e.stopPropagation();
+        document.querySelectorAll('.data-section table').forEach((table) => {
+            table.style.display = 'none';
         });
 
-        if (!res.ok) {
-            const err = await res.json().catch(() => ({}));
-            throw new Error(err.error || `Сервер ответил ${res.status}`);
+        folderButtons.forEach((btn) => {
+            btn.classList.remove('active');
+        });
+
+        const tableId = button.id.replace('-button', '-table');
+        const table = document.getElementById(tableId);
+
+        if (table) {
+            table.style.display = 'table';
+            button.classList.add('active');
         }
-
-        // очищаем форму и обновляем список
-        uploadForm.reset();
-        loadSection(currentEndpoint, currentTitle);
-
-    } catch (err) {
-        alert('Не удалось загрузить файл: ' + err.message);
-    }
-});
-
-// ==== Расписание (реальные данные EduPage через /api/timetable) ====
-
-async function loadClassList() {
-    scheduleContent.innerHTML = `<div class="panel-status">Загрузка списка групп...</div>`;
-
-    try {
-        const res = await fetch(`${API_BASE}/timetable/classes`);
-        if (!res.ok) {
-            throw new Error(`Сервер ответил ${res.status}`);
-        }
-
-        const classes = await res.json();
-
-        classSelect.innerHTML = '<option value="">Выберите группу...</option>' +
-            classes.map(name => `<option value="${escapeHtml(name)}">${escapeHtml(name)}</option>`).join('');
-
-        scheduleContent.innerHTML = `<div class="panel-status">Выберите группу выше, чтобы увидеть расписание</div>`;
-
-    } catch (err) {
-        scheduleContent.innerHTML = `
-            <div class="panel-status error">Не удалось загрузить список групп: ${escapeHtml(err.message)}</div>
-        `;
-    }
-}
-
-classSelect.addEventListener('change', () => {
-    const className = classSelect.value;
-    if (className) {
-        loadTimetable(className);
-    } else {
-        scheduleContent.innerHTML = `<div class="panel-status">Выберите группу выше, чтобы увидеть расписание</div>`;
-    }
-});
-
-async function loadTimetable(className) {
-    scheduleContent.innerHTML = `<div class="panel-status">Загрузка расписания...</div>`;
-
-    try {
-        const res = await fetch(`${API_BASE}/timetable/${encodeURIComponent(className)}`);
-
-        if (!res.ok) {
-            const err = await res.json().catch(() => ({}));
-            throw new Error(err.error || `Сервер ответил ${res.status}`);
-        }
-
-        const entries = await res.json();
-        renderTimetable(entries);
-
-    } catch (err) {
-        scheduleContent.innerHTML = `
-            <div class="panel-status error">Не удалось загрузить расписание: ${escapeHtml(err.message)}</div>
-        `;
-    }
-}
-
-const DAY_ORDER = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'];
-
-function renderTimetable(entries) {
-    if (!entries || entries.length === 0) {
-        scheduleContent.innerHTML = `<div class="panel-status">У этой группы пока нет занятий</div>`;
-        return;
-    }
-
-    // группируем записи по дням недели в правильном порядке
-    const byDay = {};
-    entries.forEach(entry => {
-        if (!byDay[entry.day]) {
-            byDay[entry.day] = [];
-        }
-        byDay[entry.day].push(entry);
     });
+});
 
-    const daysHtml = DAY_ORDER
-        .filter(day => byDay[day])
-        .map(day => {
-            const lessonsHtml = byDay[day]
-                .sort((a, b) => a.period - b.period)
-                .map(entry => `
-                    <div class="schedule-lesson">
-                        <div class="schedule-lesson-period">${entry.period} пара<br>${escapeHtml(entry.time)}</div>
-                        <div class="schedule-lesson-info">
-                            <div class="subject">${escapeHtml(entry.subject)}</div>
-                            <div class="meta">${escapeHtml(entry.teachers)} · ${escapeHtml(entry.room)}</div>
-                        </div>
-                    </div>
-                `).join('');
+const addModal = document.getElementById('add-modal');
+const addForm = document.getElementById('add-form');
 
-            return `
-                <div class="schedule-day">
-                    <div class="schedule-day-title">${escapeHtml(day)}</div>
-                    ${lessonsHtml}
-                </div>
-            `;
-        }).join('');
+const addButton = document.querySelector('.add-btn');
+const cancelAdd = document.getElementById('cancel-add');
 
-    scheduleContent.innerHTML = daysHtml;
+const addHomeworkType = document.getElementById('add-homework-type');
+const addPresentationType = document.getElementById('add-presentation-type');
+const addNotesType = document.getElementById('add-notes-type');
+
+const subjectInput = document.getElementById('subject');
+const descriptionInput = document.getElementById('description');
+const topicInput = document.getElementById('topic');
+const dueDateInput = document.getElementById('due-date');
+
+const descriptionField = document.getElementById('description-field');
+const topicField = document.getElementById('topic-field');
+const dueDateField = document.getElementById('due-date-field');
+
+let currentType = 'homework';
+
+addButton.addEventListener('click', () => {
+    addModal.showModal();
+});
+
+cancelAdd.addEventListener('click', () => {
+    addModal.close();
+});
+
+function selectType(type) {
+
+    currentType = type;
+
+    addHomeworkType.classList.remove('active');
+    addPresentationType.classList.remove('active');
+    addNotesType.classList.remove('active');
+
+    descriptionField.style.display = 'none';
+    topicField.style.display = 'none';
+    dueDateField.style.display = 'none';
+
+    if (type === 'homework') {
+
+        addHomeworkType.classList.add('active');
+
+        descriptionField.style.display = 'block';
+        dueDateField.style.display = 'block';
+
+        descriptionInput.required = true;
+        topicInput.required = false;
+        dueDateInput.required = true;
+    }
+
+    if (type === 'presentation') {
+
+        addPresentationType.classList.add('active');
+
+        descriptionField.style.display = 'block';
+        dueDateField.style.display = 'block';
+
+        descriptionInput.required = true;
+        topicInput.required = false;
+        dueDateInput.required = true;
+    }
+
+    if (type === 'notes') {
+
+        addNotesType.classList.add('active');
+
+        topicField.style.display = 'block';
+
+        descriptionInput.required = false;
+        topicInput.required = true;
+        dueDateInput.required = false;
+    }
 }
 
-// защита от XSS при выводе текста с сервера
-function escapeHtml(str) {
-    const div = document.createElement('div');
-    div.textContent = str;
-    return div.innerHTML;
-}
+addHomeworkType.addEventListener('click', () => {
+    selectType('homework');
+});
+
+addPresentationType.addEventListener('click', () => {
+    selectType('presentation');
+});
+
+addNotesType.addEventListener('click', () => {
+    selectType('notes');
+});
+
+addForm.addEventListener('submit', (e) => {
+
+    e.preventDefault();
+
+    const subject = subjectInput.value;
+    const description = descriptionInput.value;
+    const topic = topicInput.value;
+    const dueDate = dueDateInput.value;
+
+    if (currentType === 'homework') {
+
+        const tbody = document.getElementById('homework-tbody');
+
+        const row = document.createElement('tr');
+
+        row.innerHTML = `
+            <td>${subject}</td>
+            <td>${description}</td>
+            <td>${dueDate}</td>
+        `;
+
+        tbody.appendChild(row);
+    }
+
+    if (currentType === 'presentation') {
+
+        const tbody = document.getElementById('presentations-tbody');
+
+        const row = document.createElement('tr');
+
+        row.innerHTML = `
+            <td>${subject}</td>
+            <td>${description}</td>
+            <td>${dueDate}</td>
+        `;
+
+        tbody.appendChild(row);
+    }
+
+    if (currentType === 'notes') {
+
+        const tbody = document.getElementById('notes-tbody');
+
+        const row = document.createElement('tr');
+
+        row.innerHTML = `
+            <td>${subject}</td>
+            <td>${topic}</td>
+        `;
+
+        tbody.appendChild(row);
+    }
+
+    addForm.reset();
+
+    selectType('homework');
+
+    addModal.close();
+});
