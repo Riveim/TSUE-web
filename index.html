@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>TSUE</title>
+</head>
+<body>
+    <header>
+    </header>
+    <main>
+        <section class="content">
+            <h1>Welcome to TSUE</h1>
+            <div class="web-navigation">
+                <div class="buttons-nav">
+                    <button id="homework-button" class="homework-btn">Домашняя работа</button>
+                    <button id="presentations-button" class="presentations-btn">Презентации</button>
+                    <button id="notes-button" class="notes-btn">Конспекты</button>
+                    <button id="subjects-button" class="subjects-btn">Предметы</button>
+                    <button id="schedule-button" class="schedule-btn">Расписание</button>
+                </div>
+                <div class="folder-menu" id="folder-menu">
+                    <i class="folder fa-solid fa-folder" id="folder-icon"></i>
+                    <i class="folder-open fa-solid fa-folder-open" id="folder-open-icon"></i>
+                    
+                    <ul class="nav-links">
+                        <li><a href="#">About us</a></li>
+                        <li><a href="#">Contacts</a></li>
+                        <li><a href="#">Other works</a></li>
+                    </ul>
+                </div>
+                <button class="add-btn" command="show-modal" commandfor="add-modal"><i class="fa-solid fa-plus"></i></button>
+            </div>
+
+        </section>
+
+        <section class="data-section">
+
+            <table id="homework-table" style="display: none;">
+                <thead>
+                    <tr>
+                        <th>Предмет</th>
+                        <th>Описание</th>
+                        <th>Срок сдачи</th>
+                    </tr>
+                </thead>
+                <tbody id="homework-tbody">
+                </tbody>
+            </table>
+
+            <table id="presentations-table" style="display: none;">
+                <thead>
+                    <tr>
+                        <th>Предмет</th>
+                        <th>Описание</th>
+                        <th>Срок сдачи</th>
+                    </tr>
+                </thead>
+                <tbody id="presentations-tbody">
+                </tbody>
+            </table>
+
+            <table id="notes-table" style="display: none;">
+                <thead>
+                    <tr>
+                        <th>Предмет</th>
+                        <th>Тема</th>
+                    </tr>
+                </thead>
+                <tbody id="notes-tbody">
+                </tbody>
+            </table>
+
+            <table id="subjects-table" style="display: none;">
+                <thead>
+                    <tr>
+                        <th>Предмет</th>
+                        <th>Преподаватель</th>
+                    </tr>
+                </thead>
+                <tbody id="subjects-tbody">
+                </tbody>
+            </table>
+
+            <table id="schedule-table" style="display: none;">
+                <thead>
+                    <tr>
+                        <th>Предмет</th>
+                        <th>Время</th>
+                        <th>Аудитория</th>
+                    </tr>
+                </thead>
+                <tbody id="schedule-tbody">
+                </tbody>
+            </table>
+
+            <dialog id="add-modal" class="add-modal">
+
+                <form id="add-form" class="add-form">
+
+                    <h2>Добавить запись</h2>
+                    <p>Выберите тип записи:</p>
+                    <div class="what-to-add">
+
+                        <button type="button" id="add-homework-type" class="type-btn active">
+                            Домашнее задание
+                        </button>
+
+                        <button type="button" id="add-presentation-type" class="type-btn">
+                            Презентация
+                        </button>
+
+                        <button type="button" id="add-notes-type" class="type-btn">
+                            Конспект
+                        </button>
+
+                    </div>
+
+                    <label for="subject">Предмет:</label>
+                    <input
+                        type="text"
+                        id="subject"
+                        name="subject"
+                        placeholder="Введите название предмета"
+                        required
+                    >
+                    <div id="description-field">
+
+                        <label for="description">Описание:</label>
+
+                        <input
+                            type="text"
+                            id="description"
+                            name="description"
+                            placeholder="Введите описание"
+                        >
+                    </div>
+
+                    <div id="topic-field" style="display: none;">
+
+                        <label for="topic">Тема:</label>
+
+                        <input
+                            type="text"
+                            id="topic"
+                            name="topic"
+                            placeholder="Введите тему конспекта"
+                        >
+                    </div>
+
+                    <div id="due-date-field">
+
+                        <label for="due-date">Срок сдачи:</label>
+
+                        <input
+                            type="date"
+                            id="due-date"
+                            name="due-date"
+                        >
+                    </div>
+
+                    <div class="file-upload">
+
+                        <label for="file-input">Выберите файл:</label>
+
+                        <input
+                            type="file"
+                            id="file-input"
+                            name="file-input"
+                            accept=".pdf,.doc,.docx,.ppt,.pptx,.txt"
+                        >
+                    </div>
+
+                    <div class="modal-buttons">
+                        <button
+                            type="submit"
+                            style="color: rgb(45, 125, 230)"
+                        >
+                            Добавить
+                        </button>
+                        <button
+                            type="button"
+                            id="cancel-add"
+                        >
+                            Отмена
+                        </button>
+                    </div>
+                </form>
+            </dialog>
+        </section>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
