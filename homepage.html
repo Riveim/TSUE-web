@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styles/homepage.css">
+    <link rel="stylesheet" href="../styles/news.css">
+    <link rel="icon" href="fav.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Nova+Mono&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Roboto+Flex:opsz,wght,XOPQ,XTRA,YOPQ,YTDE,YTFI,YTLC,YTUC@8..144,100..1000,96,468,79,-203,738,514,712&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <title>TDIU - Tashkent Davlay Iqtisodiyot Universiteti</title>
+</head>
+<body>
+
+    <header class="top-header">
+        <div class="top-header-brand-container">
+            <img src="../images/fav.png" alt="TDIU icon" width="36px">
+            <h1 class="top-header-brand">
+                <a href="homepage.html">TDIU</a>
+            </h1>
+        </div>
+        <nav class="top-header-nav">
+            <select name="students" id="students" class="top-header-select">
+                <option value="" selected disabled hidden>Студенту</option>
+                <option value="schedule">Расписание</option>
+                <option value="resources">Учебный план</option>
+                <option value="exersices">Задания</option>
+                <option value="progress">Успеваемость</option>
+            </select>
+            <select name="teachers" id="teachers" class="top-header-select">
+                <option value="" selected disabled hidden>Преподавателям</option>
+            </select>
+            <select name="matriculants" id="matriculants" class="top-header-select">
+                <option value="" selected disabled hidden>Абитуриентам</option>
+            </select>
+        </nav>
+            <a href="registration.html" style="text-decoration: underline;">Войти<i class="fa fa-user" style="margin-left: 10px; font-size: 18px;"></i></a>
+    </header>
+
+<main>
+    <section id="news" class="news">
+        <div class="news-container">
+            <div class="news-head">
+                <h2>На этой неделе</h2>
+                <a href="news.html" class="news-link">Все новости →</a>
+            </div>
+
+            <div class="news-grid">
+
+                
+                <article class="news-card news-card--featured">
+                    <a href="news/article-1.html">
+                        <img src="../images/news-1.jpg" alt="" loading="lazy">
+                        <div class="news-body">
+                            <span class="news-tag">Наука</span>
+                            <h3>Заголовок главной новости</h3>
+                            <p>Короткий лид в одно-два предложения, который объясняет суть новости.</p>
+                            <time datetime="2026-10-27">27 октября</time>
+                        </div>
+                    </a>
+                </article>
+
+                
+                <div class="news-side">
+                    <article class="news-item">
+                        <a href="news/article-2.html">
+                            <img src="../images/news-2.jpg" alt="" loading="lazy">
+                            <div>
+                                <span class="news-tag">События</span>
+                                <h3>Заголовок короткой новости</h3>
+                                <time datetime="2026-10-26">26 октября</time>
+                            </div>
+                        </a>
+                    </article>
+                
+                </div>
+
+                
+                <article class="news-card">
+                    <a href="news/article-5.html">
+                        <img src="../images/bg.jpg" alt="" loading="lazy">
+                        <div class="news-body">
+                            <span class="news-tag">Приём</span>
+                            <h3>Заголовок новости</h3>
+                            <p>Краткое описание новости.</p>
+                            <time datetime="2026-10-24">24 октября</time>
+                        </div>
+                    </a>
+                </article>
+                
+
+            </div>
+        </div>
+    </section>
+</main>
+
+</body>
+</html>
